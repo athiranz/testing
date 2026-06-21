@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Immersia — Immersive Analytical Solution for Digital Transformation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/*
+  COLOUR USAGE 
+  Moonstone  #519CAB  → 30%  (dominant tints, borders, icons, section accents)
+  White      #FFFFFF  → 30%  (main section backgrounds, cards)
+  Saffron    #FFC64F  → 10%  } together 20% accent
+  Light Blue #C3E7F1  → 10%  }
+  Gray       #909B9D  → 10%  } together 20% dark/support
+  Gunmetal   #20373B  → 10%  }  (hero, footer, contact bg)
+*/
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --moon:    #519CAB;
+  --moon-60: #44828F;
+  --moon-70: #366872;
+  --moon-80: #294E56;
+  --moon-90: #1B3439;
+  --moon-100:#101F22;
+  --lb:      #C3E7F1;  /* Light Blue base */
+  --lb-20:   #EBF7FA;
+  --lb-30:   #E1F3F8;
+  --gold:    #FFC64F;  /* Saffron base */
+  --gold-60: #D5A542;
+  --gold-70: #AA8435;
+  --gray:    #909B9D;
+  --gray-10: #D2D7D8;
+  --gun:     #20373B;  /* Gunmetal base */
+  --gun-90:  #1B2E31;
+  --gun-100: #060B0C;
+  --white:   #FFFFFF;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Manrope',sans-serif;
+  background:var(--white);
+  color:var(--moon-80);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  font-weight:500;
+}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--moon-100);}
+::-webkit-scrollbar-thumb{background:var(--moon-80);}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.reveal.in{opacity:1;transform:none;}
+.stagger{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.stagger.in{opacity:1;transform:none;}
+.stagger.in:nth-child(1){transition-delay:.05s;}
+.stagger.in:nth-child(2){transition-delay:.15s;}
+.stagger.in:nth-child(3){transition-delay:.25s;}
+@media(prefers-reduced-motion:reduce){
+  .reveal,.stagger,.hc-stat{transition:none!important;animation:none!important;opacity:1!important;transform:none!important;}
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  height:85px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 64px;border-bottom:1px solid transparent;
+  transition:background .4s,border-color .4s,backdrop-filter .4s;
+}
+nav.stuck{
+  background:rgba(16,31,34,.92);
+  backdrop-filter:blur(20px);
+  border-color:rgba(81,156,171,.28);
+}
+.logo {display: flex;align-items: center;gap: 18px; /* Disesuaikan agar jarak dengan teks tetap seimbang */text-decoration: none;flex-shrink: 0;
+}
+
+.logo svg {width: 100px;  /* (80px * 1.25) */height: 42.5px; /* (34px * 1.25) */flex-shrink: 0;
+}
+
+.logo-words .w1 { display: block; font-size: 19px; /* Ditingkatkan agar sesuai dengan ukuran logo baru */ font-weight: 700; letter-spacing: 4px; color: #fff; line-height: 1;
+}
+
+.logo-words .w2 {display: block; font-size: 9px; /* Ditingkatkan agar lebih mudah dibaca */font-weight: 600;letter-spacing: 3.5px;color: var(--lb);margin-top: 4px; text-transform: uppercase;
+}
+.nav-ul{display:flex;list-style:none;} .nav-ul a{
+  display:block;padding:8px 16px;
+  font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
+  color:rgba(255,255,255,.52);text-decoration:none;transition:color .2s;position:relative;
+}
+.nav-ul a::after{
+  content:'';position:absolute;bottom:3px;left:16px;right:16px;
+  height:1.5px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);
+}
+.nav-ul a:hover{color:#fff;}
+.nav-ul a:hover::after{transform:scaleX(1);}
+.nav-cta{
+  background:var(--gold);color:var(--moon-100);
+  padding:10px 22px;border:none;cursor:pointer;
+  font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  transition:opacity .2s,transform .15s;
+}
+.nav-cta:hover{opacity:.88;transform:translateY(-1px);}
+
+/* ── HERO (Gunmetal 10% + Moonstone deep 20%) ── */
+#hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;overflow:hidden;
+  background:var(--moon-100);
+}
+.h-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 90% at 0% 50%,  rgba(41,78,86,.72) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 55% at 100% 15%, rgba(255,198,79,.08) 0%,transparent 52%),
+    radial-gradient(ellipse 55% 48% at 58% 100%, rgba(81,156,171,.13) 0%,transparent 58%),
+    linear-gradient(158deg, var(--moon-90) 0%, var(--moon-100) 44%, var(--gun-100) 100%);
+}
+.h-aurora{
+  position:absolute;inset:0;
+  background:
+    conic-gradient(from 200deg at 12% 55%,transparent 0deg,rgba(81,156,171,.055) 45deg,transparent 90deg),
+    conic-gradient(from 25deg  at 88% 20%,transparent 0deg,rgba(255,198,79,.045) 35deg,transparent 70deg);
+  animation:aurora 22s ease-in-out infinite alternate;
+}
+@keyframes aurora{0%{opacity:.55;transform:scale(1);}100%{opacity:1;transform:scale(1.05);}}
+#h-canvas{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.h-inner{
+  position:relative;z-index:2;
+  max-width:1200px;width:100%;margin:0 auto;
+  padding:148px 64px 108px;
+  display:grid;grid-template-columns:1fr 368px;gap:68px;align-items:center;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+/* Hero left */
+.h-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(81,156,171,.32);background:rgba(81,156,171,.07);
+  padding:7px 16px;margin-bottom:30px;
+}
+.h-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2.4s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+.h-eyebrow span{font-size:9.5px;font-weight:700;letter-spacing:2.5px;color:var(--lb);text-transform:uppercase;}
+
+.h-h1{
+  font-size:clamp(38px,5vw,62px);font-weight:700;line-height:1.07;letter-spacing:-1.5px;
+  color:#fff;margin-bottom:26px;
+  animation:fadeUp .8s .06s var(--ease) both;
+}
+.h-teal{color:var(--moon);}
+.h-gold{color:var(--gold);display:block;}
+
+.h-p{
+  font-size:15px;font-weight:500;line-height:1.9;
+  color:rgba(255,255,255,.56);max-width:480px;margin-bottom:44px;
+  animation:fadeUp .8s .14s var(--ease) both;
+}
+.h-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s .22s var(--ease) both;}
+.btn-fill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--gold);color:var(--moon-100);
+  padding:13px 28px;border:none;cursor:pointer;
+  font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
+  transition:opacity .2s,transform .15s;
+}
+.btn-fill svg{width:14px;height:14px;transition:transform .2s var(--ease);}
+.btn-fill:hover{opacity:.88;transform:translateY(-2px);}
+.btn-fill:hover svg{transform:translateX(3px);}
+.btn-line{
+  display:inline-block;background:transparent;color:rgba(255,255,255,.82);
+  padding:13px 28px;font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
+  border:1.5px solid rgba(81,156,171,.38);
+  transition:border-color .22s,color .22s;
+}
+.btn-line:hover{border-color:var(--moon);color:var(--moon);}
+
+/* Hero card */
+/* ── HERO CARD (Capabilities - Diperbesar 25%+) ── */
+.h-card {
+  background: rgba(10, 24, 26, .62);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(81, 156, 171, .28);
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp .9s .18s var(--ease) both;
+  width: 440px; /* Lebar box diperbesar */
+}
+
+.h-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; /* Garis atas sedikit lebih tebal */
+  background: linear-gradient(90deg, var(--moon), var(--gold));
+}
+
+.hc-head {
+  padding: 30px 35px; /* Box lebih lega */
+  border-bottom: 1px solid rgba(81, 156, 171, .18);
+}
+
+.hc-lbl {
+  font-size: 11px; /* Teks atas lebih jelas */
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--moon);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.hc-sub {
+  font-size: 16px; /* Text subjudul lebih besar & mudah dibaca */
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.6;
+}
+
+.hc-row {
+  display: flex; align-items: center; gap: 20px;
+  padding: 24px 35px; /* Baris lebih tinggi & luas */
+  border-bottom: 1px solid rgba(81, 156, 171, .13);
+  opacity: 0; animation: fadeUp .55s var(--ease) forwards;
+  transition: background .2s;
+}
+
+.hc-ico {
+  width: 42px; height: 42px; /* Ikon diperbesar */
+  border: 1px solid rgba(81, 156, 171, .32);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--lb);
+}
+
+.hc-ico svg {
+  width: 20px; height: 20px; /* Ikon svg diperbesar */
+}
+
+.hc-val {
+  font-size: 24px; /* Angka diperbesar signifikan */
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.5px;
+  line-height: 1;
+}
+
+.hc-val sup {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  vertical-align: super;
+  margin-left: 3px;
+}
+
+.hc-lbl2 {
+  font-size: 13px; /* Label detail lebih mudah dibaca */
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75); /* Kontras lebih baik */
+  margin-top: 5px;
+}
+
+/* Scroll hint */
+.h-scroll{
+  position:absolute;bottom:30px;left:64px;z-index:2;
+  display:flex;align-items:center;gap:12px;
+  color:rgba(255,255,255,.28);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+}
+.h-scroll-line{
+  width:38px;height:1px;
+  background:linear-gradient(90deg,var(--moon),transparent);
+  animation:sline 2.2s ease-in-out infinite;
+}
+@keyframes sline{0%,100%{opacity:.35;transform:scaleX(1);}50%{opacity:1;transform:scaleX(1.3);}}
+
+/* ── SECTION SHELL ── */
+/* White 30% sections */
+.s-white{background:var(--white);}
+/* Light Blue 10% tint sections */
+.s-tint{background:var(--lb-30);}
+/* Gunmetal dark sections */
+.s-dark{background:var(--gun);}
+
+.sec{padding:110px 64px;position:relative;}
+.wrap{max-width:1200px;margin:0 auto;position:relative;}
+
+.eyebrow{
+  display:flex;align-items:center;gap:14px;
+  font-size:10px;font-weight:700;letter-spacing:3px;
+  color:var(--moon);text-transform:uppercase;margin-bottom:18px;
+}
+.eyebrow::before{content:'';width:22px;height:1.5px;background:var(--gold);flex-shrink:0;}
+.s-dark .eyebrow{color:var(--lb);}
+
+.sh{
+  font-size:clamp(27px,3.4vw,44px);
+  font-weight:700;letter-spacing:-1px;line-height:1.1;
+  color:var(--moon-80);margin-bottom:16px;
+}
+.sh em{font-style:normal;color:var(--moon);}
+.s-dark .sh{color:#fff;}
+.s-dark .sh em{color:var(--gold);}
+
+.slead{font-size:15px;font-weight:500;color:var(--gray);line-height:1.85;max-width:520px;}
+.s-dark .slead{color:rgba(255,255,255,.52);}
+
+/* divider line style */
+.sec-line{
+  position:absolute;top:0;left:64px;right:64px;height:1px;
+  background:linear-gradient(90deg,var(--lb),transparent);
+}
+
+/* ── ABOUT (White bg = 30% white usage) ── */
+#about{background:var(--white);}
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;margin-top:60px;
+  border:1px solid var(--lb);position:relative;
+}
+.about-grid::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--moon) 0%,var(--gold) 60%,transparent 100%);
+}
+.a-col{padding:54px 50px;}
+.a-col:first-child{border-right:1px solid var(--lb);}
+.col-tag{
+  font-size:9.5px;font-weight:700;letter-spacing:3px;
+  color:var(--gold-70);text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.col-tag::before{content:'';width:16px;height:1.5px;background:var(--moon);flex-shrink:0;}
+.a-col h3{font-size:20px;font-weight:700;color:var(--moon-80);margin-bottom:16px;letter-spacing:-.3px;line-height:1.3;}
+.a-col p{font-size:14px;font-weight:500;color:var(--moon-70);line-height:2;}
+
+/* Sector list — uses Moonstone accent left border on hover */
+.sector-list{margin-top:30px;border:1px solid var(--lb);}
+.sr{
+  display:flex;align-items:center;gap:14px;
+  padding:15px 18px;border-bottom:1px solid var(--lb-30);
+  font-size:13.5px;font-weight:600;color:var(--moon-80);
+  transition:background .2s,padding-left .22s var(--ease);
+  cursor:default;border-left:3px solid transparent;
+}
+.sr:last-child{border-bottom:none;}
+.sr:hover{background:var(--lb-20);padding-left:26px;border-left-color:var(--moon);}
+.sr-ico{
+  width:28px;height:28px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--lb-30);border:1px solid var(--lb);color:var(--moon-60);
+}
+.sr-ico svg{width:14px;height:14px;}
+
+/* ── SOLUTIONS (Light Blue tint bg = 10% LB usage) ── */
+#solutions{background:var(--lb-30);}
+.sol-top{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:56px;
+  align-items:flex-end;margin-bottom:52px;
+}
+.sol-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;border:1px solid var(--lb);
+}
+/* Each card = White bg (part of 30% white) */
+.sol-c{
+  padding:42px 34px;position:relative;overflow:hidden;
+  background:var(--white);
+  border-right:1px solid var(--lb);
+  transition:background .25s;
+}
+.sol-c:last-child{border-right:none;}
+.sol-c:hover{background:var(--lb-20);}
+.sol-bar{
+  position:absolute;top:0;left:0;width:0;height:3px;
+  background:linear-gradient(90deg,var(--moon),var(--gold));
+  transition:width .42s var(--ease);
+}
+.sol-c:hover .sol-bar{width:100%;}
+/* Watermark cube from brand identity elements p.19 */
+.sol-cube{
+  position:absolute;bottom:-16px;right:-10px;
+  width:110px;height:110px;opacity:.055;
+  transition:opacity .3s,transform .4s var(--ease);pointer-events:none;
+}
+.sol-c:hover .sol-cube{opacity:.12;transform:translateY(-5px);}
+.sol-ico{
+  width:44px;height:44px;border:1px solid var(--lb);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;background:var(--lb-30);color:var(--moon-60);
+  transition:background .22s,color .22s,border-color .22s;
+}
+.sol-ico svg{width:20px;height:20px;}
+.sol-c:hover .sol-ico{background:var(--moon);border-color:var(--moon);color:#fff;}
+.sol-c h3{font-size:17px;font-weight:700;color:var(--moon-80);margin-bottom:10px;letter-spacing:-.2px;}
+.sol-c p{font-size:13px;font-weight:500;color:var(--moon-70);line-height:1.82;margin-bottom:20px;}
+.sol-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.sol-tag{
+  font-size:9px;font-weight:700;letter-spacing:1.3px;
+  color:var(--moon-60);border:1px solid var(--lb);
+  padding:3px 9px;text-transform:uppercase;background:var(--lb-30);
+}
+
+/* ── PRODUCTS (White bg) ── */
+#products{background:var(--white);}
+.prod-intro{
+  font-size:14px;font-weight:500;color:var(--moon-70);line-height:1.95;
+  max-width:760px;margin:24px 0 0;padding:20px 24px;
+  border-left:3px solid var(--moon);background:var(--lb-30);
+}
+.prod-wrap{
+  display:grid;grid-template-columns:272px 1fr;
+  gap:0;margin-top:38px;border:1px solid var(--lb);position:relative;
+}
+.prod-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--moon));
+}
+/* Nav column = Light Blue tint (part of 10% LB usage) */
+.prod-nav{border-right:1px solid var(--lb);background:var(--lb-30);}
+.p-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:18px 22px;border-bottom:1px solid var(--lb-20);
+  cursor:pointer;transition:background .18s;
+  border-left:3px solid transparent;
+}
+.p-item:last-child{border-bottom:none;}
+.p-item:hover{background:var(--lb-20);}
+.p-item.on{background:var(--lb-20);border-left-color:var(--gold);}
+.p-item.on .p-ico{background:var(--moon);border-color:var(--moon);color:#fff;}
+.p-ico{
+  width:28px;height:28px;flex-shrink:0;margin-top:1px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--white);border:1px solid var(--lb);color:var(--moon-60);
+  transition:background .18s,color .18s,border-color .18s;
+}
+.p-ico svg{width:13px;height:13px;}
+.p-name{font-size:12px;font-weight:600;color:var(--moon-80);line-height:1.45;padding-top:5px;}
+/* Body = White */
+.prod-body{padding:46px 48px;background:var(--white);}
+.pd-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.pd-ico{width:44px;height:44px;background:var(--moon);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pd-ico svg{width:20px;height:20px;}
+.prod-body h3{font-size:20px;font-weight:700;color:var(--moon-80);letter-spacing:-.3px;}
+.prod-desc{
+  font-size:14px;font-weight:500;color:var(--moon-70);line-height:1.92;
+  padding-bottom:30px;border-bottom:1px solid var(--lb);
+}
+.usp-label{
+  font-size:9.5px;font-weight:700;letter-spacing:2.5px;
+  color:var(--gold-70);text-transform:uppercase;margin:26px 0 16px;
+}
+.usp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.usp-box{
+  padding:16px 18px;border:1px solid var(--lb);background:var(--lb-30);
+  transition:border-color .2s,background .2s;
+}
+.usp-box:hover{border-color:var(--moon);background:var(--lb-20);}
+.usp-box-ico{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--moon);margin-bottom:10px;}
+.usp-box-ico svg{width:17px;height:17px;}
+.usp-box p{font-size:12px;font-weight:500;color:var(--moon-70);line-height:1.75;}
+.consult-strip{
+  margin-top:14px;padding:16px 18px;
+  border:1px solid rgba(213,165,66,.35);background:rgba(255,198,79,.05);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.cs-ico{width:20px;height:20px;flex-shrink:0;color:var(--gold-70);margin-top:1px;}
+.cs-ico svg{width:17px;height:17px;}
+.consult-strip p{font-size:12px;font-weight:500;color:var(--moon-70);line-height:1.75;}
+.consult-strip strong{color:var(--gold-70);font-weight:700;}
+.industry-row{margin-top:22px;padding-top:22px;border-top:1px solid var(--lb);}
+.industry-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.i-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:600;color:var(--moon-80);
+  border:1px solid var(--lb);padding:7px 14px 7px 10px;
+  background:var(--lb-30);transition:background .18s,border-color .18s;
+}
+.i-tag:hover{background:var(--lb-20);border-color:var(--moon);}
+.i-tag svg{width:13px;height:13px;color:var(--moon);}
+
+/* ── CONTACT (Gunmetal dark bg = 10% Gunmetal usage) ── */
+#contact{background:var(--gun);position:relative;overflow:hidden;}
+#contact::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(81,156,171,.09) 0%,transparent 70%);
+  pointer-events:none;
+}
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:68px;margin-top:52px;align-items:start;}
+.info-list{border:1px solid rgba(81,156,171,.28);position:relative;}
+.info-list::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--moon),var(--gold));}
+.ic{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 22px;border-bottom:1px solid rgba(81,156,171,.18);
+  transition:background .18s;
+}
+.ic:last-child{border-bottom:none;}
+.ic:hover{background:rgba(81,156,171,.06);}
+.ic-ico{
+  width:34px;height:34px;border:1px solid rgba(81,156,171,.3);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:var(--lb);
+}
+.ic-ico svg{width:15px;height:15px;}
+.ic-lbl{font-size:8.5px;font-weight:700;color:var(--lb);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+.ic-val{font-size:13.5px;font-weight:500;color:rgba(255,255,255,.84);}
+.ic-val a{color:rgba(255,255,255,.84);text-decoration:none;transition:color .2s;}
+.ic-val a:hover{color:var(--lb);}
+.form-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(81,156,171,.28);
+  padding:42px;position:relative;
+}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--moon));}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.fg.full{grid-column:1/-1;}
+.frow .fg{margin-bottom:0;}
+.fg label{font-size:9px;font-weight:700;color:var(--lb);letter-spacing:2px;text-transform:uppercase;}
+.fg input,.fg select,.fg textarea{
+  background:transparent;border:1px solid rgba(81,156,171,.28);
+  color:rgba(255,255,255,.88);padding:11px 14px;
+  font-family:'Manrope',sans-serif;font-size:13.5px;font-weight:500;
+  outline:none;resize:none;transition:border-color .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--moon);}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.22);}
+.fg select option{background:var(--gun);}
+.submit-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--gold);color:var(--moon-100);
+  padding:14px;border:none;margin-top:7px;
+  font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  transition:opacity .2s,transform .15s;
+}
+.submit-btn svg{width:14px;height:14px;transition:transform .2s var(--ease);}
+.submit-btn:hover{opacity:.88;}
+.submit-btn:hover svg{transform:translateX(3px);}
+.f-note{margin-top:10px;font-size:11px;font-weight:500;color:rgba(255,255,255,.38);line-height:1.55;}
+.f-note.err{color:#ffb3b3;}
+.f-note.ok{color:var(--lb);}
+
+/* ── FOOTER (deepest dark = Gunmetal 100%) ── */
+footer{
+  background:var(--gun-100);border-top:1px solid rgba(81,156,171,.22);
+  padding:38px 64px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;
+}
+.f-logo{display:flex;align-items:center;gap:12px;}
+.f-copy{font-size:11px;font-weight:500;color:rgba(255,255,255,.28);}
+.f-links{display:flex;gap:26px;}
+.f-links a{font-size:11px;font-weight:500;color:rgba(255,255,255,.28);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--moon);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1020px){
+  nav{padding:0 24px;}
+  .nav-ul,.nav-cta{display:none;}
+  .sec{padding:80px 24px;}
+  .h-inner{padding:120px 24px 80px;grid-template-columns:1fr;gap:36px;}
+  .h-card{display:none;}
+  .h-scroll{left:24px;}
+  .about-grid{grid-template-columns:1fr;}
+  .a-col:first-child{border-right:none;border-bottom:1px solid var(--lb);}
+  .sol-top{grid-template-columns:1fr;gap:18px;}
+  .sol-grid{grid-template-columns:1fr;}
+  .sol-c{border-right:none;border-bottom:1px solid var(--lb);}
+  .sol-c:last-child{border-bottom:none;}
+  .prod-wrap{grid-template-columns:1fr;}
+  .prod-nav{border-right:none;border-bottom:1px solid var(--lb);}
+  .prod-body{padding:30px 22px;}
+  .usp-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;gap:36px;}
+  .frow{grid-template-columns:1fr;}
+  footer{padding:28px 24px;flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- Brand cube symbol (Identity Element, p.19 — used as watermark) -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none;">
+  <defs>
+    <symbol id="cube" viewBox="0 0 100 116">
+      <polygon points="50,0 100,29 50,58 0,29"  fill="#A8CED5"/>
+      <polygon points="0,29 50,58 50,116 0,87"  fill="#519CAB"/>
+      <polygon points="100,29 50,58 50,116 100,87" fill="#294E56"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="logo">
+    <svg viewBox="0 0 40 46" fill="none">
+      <defs>
+        <linearGradient id="mg" x1="0" y1="17" x2="0" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#8BBDC7"/>
+          <stop offset="1" stop-color="#294E56"/>
+        </linearGradient>
+      </defs>
+      <polygon points="20,1 31,9.5 20,18 9,9.5" fill="#FFC64F"/>
+      <polygon points="6,17 20,25.5 34,17 34,40 27,36 20,40 13,36 6,40" fill="url(#mg)"/>
+      <polygon points="11,22 20,27.5 29,22 29,36 24,33 20,36 16,33 11,36" fill="#152527" opacity=".55"/>
+    </svg>
+    <div class="logo-words">
+      <span class="w1">IMMERSIA</span>
+      <span class="w2">Solusi Analitika</span>
+    </div>
+  </a>
+  <ul class="nav-ul">
+    <li><a href="#about">About</a></li>
+    <li><a href="#solutions">Solutions</a></li>
+    <li><a href="#products">Products & Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Us</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-bg"></div>
+  <div class="h-aurora"></div>
+  <canvas id="h-canvas"></canvas>
+  <div class="h-inner">
+    <div>
+      <h1 class="h-h1">
+        Immersive<br>
+        <span class="h-teal">Analytical</span><br>
+        Solution for<br>
+        <span class="h-gold">Digital Transformation</span>
+      </h1>
+      <p class="h-p">A trusted partner in laboratory digital transformation — integrating data, technology, and artificial intelligence into one unified and immersive solution.</p>
+      <div class="h-btns">
+        <a href="#solutions" class="btn-fill">Our Solutions <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <a href="#contact" class="btn-line">Free Consultation</a>
+      </div>
+    </div>
+    <div class="h-card">
+      <div class="hc-head">
+        <div class="hc-lbl">Capabilities at a glance</div>
+        <div class="hc-sub">Integrated end-to-end solutions for modern laboratories in Indonesia</div>
+      </div>
+      <div class="hc-row">
+        <div class="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <div><div class="hc-val">3<sup>+</sup></div><div class="hc-lbl2">Key industry sectors</div></div>
+      </div>
+      <div class="hc-row">
+        <div class="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div><div class="hc-val">ISO<sup>17025</sup></div><div class="hc-lbl2">Certification support</div></div>
+      </div>
+      <div class="hc-row">
+        <div class="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
+        <div><div class="hc-val">AI<sup>Powered</sup></div><div class="hc-lbl2">ML &amp; predictive analytics</div></div>
+      </div>
+      <div class="hc-row">
+        <div class="hc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><path d="M6.5 10v4a2 2 0 0 0 2 2h5"/></svg></div>
+        <div><div class="hc-val">360°</div><div class="hc-lbl2">End-to-end solution</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT (White bg) -->
+<section id="about" class="sec s-white">
+  <div class="wrap">
+    <div class="eyebrow reveal">01 — About Us</div>
+    <h2 class="sh reveal">Data Crystallization Becomes<br><em>Immersive Solutions</em></h2>
+    <div class="about-grid reveal">
+      <div class="a-col">
+        <div class="col-tag">Philosophy</div>
+        <h3>Data is Valuable Information that Needs to be Crystallized</h3>
+        <p>Data is valuable information, a modular expanse in a dark space — like the complexity of millions of raw data points and massive technological architectures. Amidst this complexity, a crystallization process occurs, depicted by the peaks of a cube emitting a bright golden light.<br><br>Immersia Solusi Analitika revolutionizes data management, transforming it into a luminous crystal cube filled with immersive solutions. Through this approach, the entire essence of knowledge and future innovation is brilliantly simplified into a single, unified solution.</p>
+      </div>
+      <div class="a-col">
+        <div class="col-tag">What We Do</div>
+        <h3>Trusted Partner in Digitalization &amp; Automation</h3>
+        <p>PT Immersia Solusi Analitika is a trusted partner providing integrated digitalization and automation solutions. Through our products and services, we will continue to contribute to driving quality and productivity improvements in the following sectors.</p>
+        <div class="sector-list">
+          <div class="sr">
+            <span class="sr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg></span>
+            Energy &amp; Mineral
+          </div>
+          <div class="sr">
+            <span class="sr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 21.5 16.5 5.5"/><path d="M5.3 17 6.8 15.2l1.7 1.7a2.6 2.6 0 0 1 0 3.6L6.8 22.2 5.3 20.6a2.6 2.6 0 0 1 0-3.6Z"/><path d="M9 12.5 10.5 10.7l1.7 1.7a2.6 2.6 0 0 1 0 3.6L10.5 17.7 9 16a2.6 2.6 0 0 1 0-3.6Z"/><path d="M12.7 8 14.2 6.2l1.7 1.7a2.6 2.6 0 0 1 0 3.6L14.2 13.2 12.7 11.6a2.6 2.6 0 0 1 0-3.6Z"/></svg></span>
+            Food &amp; Agriculture
+          </div>
+          <div class="sr">
+            <span class="sr-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>
+            Research &amp; Education
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTIONS (Light Blue tint) -->
+<section id="solutions" class="sec s-tint">
+  <div class="wrap">
+    <div class="sol-top">
+      <div>
+        <div class="eyebrow reveal">02 — Solutions</div>
+        <h2 class="sh reveal">Solutions for<br><em>Every Industry</em></h2>
+      </div>
+      <p class="slead reveal">Customized to the specific needs of each sector — from large-scale mineral extraction to precise academic research.</p>
+    </div>
+    <div class="sol-grid">
+      <div class="sol-c stagger">
+        <div class="sol-bar"></div>
+        <svg class="sol-cube" viewBox="0 0 100 116"><use href="#cube"/></svg>
+        <div class="sol-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg></div>
+        <h3>Energy &amp; Mineral</h3>
+        <p>Connecting the entire value chain from upstream to downstream through a Digital Thread — a seamless data flow connecting geological data at the start to finished products at the end of the downstream process.</p>
+        <div class="sol-tags"><span class="sol-tag">Digital Thread</span><span class="sol-tag">LIMS</span><span class="sol-tag">Real-time</span></div>
+      </div>
+      <div class="sol-c stagger">
+        <div class="sol-bar"></div>
+        <svg class="sol-cube" viewBox="0 0 100 116"><use href="#cube"/></svg>
+        <div class="sol-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 21.5 16.5 5.5"/><path d="M5.3 17 6.8 15.2l1.7 1.7a2.6 2.6 0 0 1 0 3.6L6.8 22.2 5.3 20.6a2.6 2.6 0 0 1 0-3.6Z"/><path d="M9 12.5 10.5 10.7l1.7 1.7a2.6 2.6 0 0 1 0 3.6L10.5 17.7 9 16a2.6 2.6 0 0 1 0-3.6Z"/><path d="M12.7 8 14.2 6.2l1.7 1.7a2.6 2.6 0 0 1 0 3.6L14.2 13.2 12.7 11.6a2.6 2.6 0 0 1 0-3.6Z"/></svg></div>
+        <h3>Food &amp; Agriculture</h3>
+        <p>Providing integrated technology — from precision agriculture on plantations, quality monitoring during processing, to meeting quality standards for food and agricultural products.</p>
+        <div class="sol-tags"><span class="sol-tag">Precision Agriculture</span><span class="sol-tag">Quality Monitoring</span><span class="sol-tag">Traceability</span></div>
+      </div>
+      <div class="sol-c stagger">
+        <div class="sol-bar"></div>
+        <svg class="sol-cube" viewBox="0 0 100 116"><use href="#cube"/></svg>
+        <div class="sol-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
+        <h3>Research &amp; Education</h3>
+        <p>Encouraging the growth of innovation and improving the quality of research and education through digitalization and the use of Machine Learning &amp; AI.</p>
+        <div class="sol-tags"><span class="sol-tag">ISO 17025</span><span class="sol-tag">ML &amp; AI</span><span class="sol-tag">Innovation</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS & SERVICES (White bg) -->
+<section id="products" class="sec s-white">
+  <div class="wrap">
+    <div class="eyebrow reveal">03 — Products &amp; Services</div>
+    <h2 class="sh reveal">End-to-End<br><em>Solution Ecosystem</em></h2>
+    <p class="slead reveal">From AI-powered LIMS software to complete laboratory infrastructure — all within one strategic partner.</p>
+    <p class="prod-intro reveal">LIMS software with cutting-edge technology integrating data analytics, machine learning, and artificial intelligence, supported by the provision of laboratory services, spare parts, consumables, IT infrastructure, and specialist consultation services.</p>
+    <div class="prod-wrap reveal">
+      <div class="prod-nav">
+        <div class="p-item on" data-i="0">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
+          <span class="p-name">LIMS — Laboratory Information Management System</span>
+        </div>
+        <div class="p-item" data-i="1">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></span>
+          <span class="p-name">Data Analytics &amp; Machine Learning</span>
+        </div>
+        <div class="p-item" data-i="2">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></span>
+          <span class="p-name">IoT, Sensors &amp; Automation System</span>
+        </div>
+        <div class="p-item" data-i="3">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></span>
+          <span class="p-name">IT Infrastructure</span>
+        </div>
+        <div class="p-item" data-i="4">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span>
+          <span class="p-name">Chemicals, Reagents &amp; CRMs</span>
+        </div>
+      </div>
+      <div class="prod-body">
+        <div class="pd-head">
+          <div class="pd-ico" id="pd-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+          <h3 id="pd-t">LIMS — Laboratory Information Management System</h3>
+        </div>
+        <p class="prod-desc" id="pd-d">LIMS software with cutting-edge technology integrating data analytics, machine learning, and artificial intelligence. Designed to enhance efficiency, accuracy, and traceability across all laboratory processes digitally and in an integrated manner.</p>
+        <div class="usp-label">Key Advantages &amp; USP</div>
+        <div class="usp-grid">
+          <div class="usp-box">
+            <div class="usp-box-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3.5 2 5 3 7h10c1-2 3-3.5 3-7a8 8 0 0 0-8-8Z"/><path d="M9 21h6"/><path d="M10 17h4"/></svg></div>
+            <p>Deep integration of AI, machine learning, and predictive analytics to deliver in-depth insights and predict trends accurately.</p>
+          </div>
+          <div class="usp-box">
+            <div class="usp-box-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></div>
+            <p>One-stop end-to-end solution: LIMS software, laboratory services, spare parts, consumables, IT infrastructure, consultation and certification.</p>
+          </div>
+          <div class="usp-box">
+            <div class="usp-box-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg></div>
+            <p>High flexibility — tailored for various industries including mining, agriculture, environment, food &amp; beverage, and pharma.</p>
+          </div>
+        </div>
+        <div class="consult-strip">
+          <div class="cs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg></div>
+          <p><strong>Consultation Services:</strong> Comprehensive consultation for establishing new laboratories and full support in achieving ISO 17025 certification to ensure the highest quality standards.</p>
+        </div>
+        <div class="industry-row">
+          <div class="usp-label">Industries Served</div>
+          <div class="industry-tags">
+            <span class="i-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></svg>Energy &amp; Mineral</span>
+            <span class="i-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 21.5 16.5 5.5"/><path d="M5.3 17 6.8 15.2l1.7 1.7a2.6 2.6 0 0 1 0 3.6L6.8 22.2 5.3 20.6a2.6 2.6 0 0 1 0-3.6Z"/><path d="M9 12.5 10.5 10.7l1.7 1.7a2.6 2.6 0 0 1 0 3.6L10.5 17.7 9 16a2.6 2.6 0 0 1 0-3.6Z"/><path d="M12.7 8 14.2 6.2l1.7 1.7a2.6 2.6 0 0 1 0 3.6L14.2 13.2 12.7 11.6a2.6 2.6 0 0 1 0-3.6Z"/></svg>Food &amp; Agriculture</span>
+            <span class="i-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Research &amp; Education</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT (Gunmetal dark) -->
+<section id="contact" class="sec s-dark">
+  <div class="wrap">
+    <div class="eyebrow reveal">04 — Contact Us</div>
+    <h2 class="sh reveal">Let's Talk</h2>
+    <p class="slead reveal">Ready to help with your laboratory digital transformation. Reach out for a free consultation.</p>
+    <div class="contact-grid reveal">
+      <div>
+        <div class="info-list">
+          <div class="ic">
+            <div class="ic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg></div>
+            <div><div class="ic-lbl">Website</div><div class="ic-val"><a href="https://www.immers.id" target="_blank">www.immers.id</a></div></div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg></div>
+            <div><div class="ic-lbl">Email</div><div class="ic-val"><a href="mailto:info@immers.id">info@immers.id</a></div></div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="ic-lbl">Office</div><div class="ic-val">Infiniti Office, Ruko Permata Regency Blok D No. 37, Jl. Haji Kelik Rt 001 Rw 006, Kel. Srengseng, Kec. Kembangan, Jakarta Barat 11630</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-card">
+        <div class="frow">
+          <div class="fg"><label>Full Name</label><input id="f-name" type="text" placeholder="Your name"></div>
+          <div class="fg"><label>Email</label><input id="f-email" type="email" placeholder="name@company.com"></div>
+          <div class="fg"><label>Company</label><input id="f-company" type="text" placeholder="Company name"></div>
+          <div class="fg"><label>Industry</label>
+            <select id="f-industry">
+              <option value="">Select industry...</option>
+              <option>Energy &amp; Mineral</option>
+              <option>Food &amp; Agriculture</option>
+              <option>Research &amp; Education</option>
+              <option>Environment</option>
+              <option>Food &amp; Beverage</option>
+              <option>Pharma</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg full"><label>Message</label><textarea id="f-message" rows="5" placeholder="Tell us about your laboratory needs..."></textarea></div>
+        <button class="submit-btn" id="f-submit">
+          Send Message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <div class="f-note" id="f-note"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">
+    <svg width="26" height="30" viewBox="0 0 40 46" fill="none">
+      <polygon points="20,1 31,9.5 20,18 9,9.5" fill="#FFC64F"/>
+      <polygon points="6,17 20,25.5 34,17 34,40 27,36 20,40 13,36 6,40" fill="#519CAB"/>
+      <polygon points="11,22 20,27.5 29,22 29,36 24,33 20,36 16,33 11,36" fill="#152527" opacity=".55"/>
+    </svg>
+    <div>
+      <div style="font-size:13px;font-weight:700;letter-spacing:3.5px;color:#fff;">IMMERSIA</div>
+      <div style="font-size:7px;font-weight:600;letter-spacing:3px;color:#519CAB;text-transform:uppercase;">Solusi Analitika</div>
+    </div>
+  </div>
+  <span class="f-copy">© 2026 PT Immersia Solusi Analitika. All rights reserved.</span>
+  <div class="f-links">
+    <a href="#about">About</a>
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+/* ── HERO CANVAS: gradient orbs + particles, no grid ── */
+(function(){
+  const cv=document.getElementById('h-canvas'),ctx=cv.getContext('2d');
+  let W,H;
+  function rs(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  rs();window.addEventListener('resize',rs);
+  const orbs=[
+    {x:.14,y:.50,r:230,vx:.00028,vy:.00018,c:'t',ph:0},
+    {x:.80,y:.18,r:185,vx:-.00020,vy:.00025,c:'g',ph:1.2},
+    {x:.52,y:.88,r:205,vx:.00018,vy:-.00020,c:'t',ph:2.5},
+    {x:.88,y:.72,r:155,vx:-.00028,vy:-.00018,c:'t',ph:3.7},
+    {x:.30,y:.14,r:135,vx:.00018,vy:.00028,c:'g',ph:4.9},
+    {x:.60,y:.50,r:175,vx:-.00018,vy:.00018,c:'t',ph:0.7},
+  ];
+  const pts=Array.from({length:55},()=>({
+    x:Math.random(),y:Math.random(),
+    vx:(Math.random()-.5)*.00014,vy:(Math.random()-.5)*.00014,
+    r:.5+Math.random()*1.3,a:.07+Math.random()*.26
+  }));
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);t+=.011;
+    orbs.forEach(o=>{
+      o.x+=o.vx;o.y+=o.vy;
+      if(o.x<-.1)o.x=1.1;if(o.x>1.1)o.x=-.1;
+      if(o.y<-.1)o.y=1.1;if(o.y>1.1)o.y=-.1;
+      const px=o.x*W,py=o.y*H,pulse=1+.07*Math.sin(t+o.ph);
+      const gr=ctx.createRadialGradient(px,py,0,px,py,o.r*pulse);
+      if(o.c==='t'){gr.addColorStop(0,'rgba(81,156,171,.10)');gr.addColorStop(.5,'rgba(81,156,171,.04)');gr.addColorStop(1,'rgba(81,156,171,0)');}
+      else{gr.addColorStop(0,'rgba(255,198,79,.08)');gr.addColorStop(.5,'rgba(255,198,79,.03)');gr.addColorStop(1,'rgba(255,198,79,0)');}
+      ctx.beginPath();ctx.arc(px,py,o.r*pulse,0,Math.PI*2);ctx.fillStyle=gr;ctx.fill();
+    });
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
+      ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(81,156,171,${p.a})`;ctx.fill();
+    });
+    const md=.12;
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<md){ctx.beginPath();ctx.moveTo(pts[i].x*W,pts[i].y*H);ctx.lineTo(pts[j].x*W,pts[j].y*H);
+        ctx.strokeStyle=`rgba(81,156,171,${.07*(1-d/md)})`;ctx.lineWidth=.45;ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Nav stuck ── */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('stuck',window.scrollY>20));
+
+/* ── Scroll reveal ── */
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.14,rootMargin:'0px 0px -55px 0px'});
+  document.querySelectorAll('.reveal,.stagger').forEach(el=>io.observe(el));
+})();
+
+/* ── Products tab ── */
+const PD=[
+  {t:'LIMS — Laboratory Information Management System',d:'LIMS software with cutting-edge technology integrating data analytics, machine learning, and artificial intelligence. Designed to enhance efficiency, accuracy, and traceability across all laboratory processes digitally and in an integrated manner.',icon:'<rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18"/><path d="M9 21V9"/>'},
+  {t:'Data Analytics & Machine Learning',d:'Data analytics and machine learning solutions that transform laboratory data into strategic insights. From real-time data visualization to predictive models for proactive, data-driven quality control.',icon:'<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>'},
+  {t:'IoT, Sensors & Automation System',d:'Integration of IoT devices and smart sensors into the laboratory ecosystem for automated monitoring, high-precision data collection, and seamless, efficient automation of laboratory workflows.',icon:'<path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>'},
+  {t:'IT Infrastructure',d:'Provision and management of comprehensive IT infrastructure — from on-premise servers and cloud deployment to networking and data security — to support reliable and secure digital laboratory operations.',icon:'<rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>'},
+  {t:'Chemicals, Reagents & CRMs',d:'Supply of high-quality laboratory chemicals, reagents, and Certified Reference Materials (CRMs) from globally trusted brands, with guaranteed authenticity and consistent stock availability for all laboratory needs.',icon:'<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>'},
+];
+document.querySelectorAll('.p-item').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.p-item').forEach(x=>x.classList.remove('on'));
+    el.classList.add('on');
+    const d=PD[+el.dataset.i];
+    document.getElementById('pd-t').textContent=d.t;
+    document.getElementById('pd-d').textContent=d.d;
+    document.getElementById('pd-ico').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d.icon}</svg>`;
+  });
+});
+
+/* ── Contact form mailto ── */
+document.getElementById('f-submit').addEventListener('click',()=>{
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const company=document.getElementById('f-company').value.trim();
+  const industry=document.getElementById('f-industry').value.trim();
+  const msg=document.getElementById('f-message').value.trim();
+  const note=document.getElementById('f-note');
+  if(!name||!email||!msg){note.textContent='Please fill in your name, email, and message.';note.className='f-note err';return;}
+  const subj=encodeURIComponent('Laboratory Consultation — '+(company||name));
+  const body=encodeURIComponent(['Name: '+name,'Email: '+email,'Company: '+(company||'-'),'Industry: '+(industry||'-'),'',msg].join('\n'));
+  window.location.href=`mailto:info@immers.id?subject=${subj}&body=${body}`;
+  note.textContent='Opening your email client to send to info@immers.id...';
+  note.className='f-note ok';
+});
+</script>
+</body>
+</html>
